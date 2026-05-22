@@ -1,0 +1,178 @@
+You are a senior full-stack developer and award-winning UI/UX designer. 
+Build a single-file, fully self-contained HTML website called 
+**"MEMEPEDIA — The Internet's Cultural Archive"** — a premium, 
+high-end, editorial-grade showcase of the most trending internet 
+memes sorted by year.
+
+---
+
+## 🎯 CORE CONCEPT
+
+A dark-luxury, glass-morphism editorial website that feels like a 
+digital museum crossed with a high-fashion magazine. Every element 
+must feel intentional, premium, and alive. The user scrolls through 
+history — each year is a cinematic "chapter" of internet culture.
+
+---
+
+## 📐 LAYOUT & STRUCTURE
+
+### Hero Section
+- Full-viewport animated hero with a kinetic particle/grid background 
+  using canvas or CSS animation
+- Glitching, scrambled-text headline animation that resolves to: 
+  "MEMEPEDIA" in a bold editorial display font (use Google Fonts: 
+  "Bebas Neue" or "Monument Extended" feel — try "Archivo Black")
+- Subtitle: "Cataloguing the Internet's Cultural Zeitgeist" in thin 
+  italic serif ("Playfair Display" or "DM Serif Display")
+- Animated scroll-down indicator with morphing arrow
+- Floating glass card showing live "Total Memes Catalogued: 1,200+" 
+  counter that animates up on load
+
+### Navigation
+- Sticky glass-morphism navbar (backdrop-filter: blur(20px), 
+  semi-transparent dark background)
+- Year quick-jump links that highlight as user scrolls through years
+- Smooth scroll behavior throughout
+
+### Timeline / Year Sections
+Render these EXACT years with these EXACT meme counts 
+(make up realistic meme names that actually trended that year):
+
+  2012 — 48 memes  
+  2013 — 52 memes  
+  2014 — 61 memes  
+  2015 — 58 memes  
+  2016 — 74 memes  
+  2017 — 69 memes  
+  2018 — 83 memes  
+  2019 — 91 memes  
+  2020 — 127 memes (COVID supercycle)  
+  2021 — 108 memes  
+  2022 — 95 memes  
+  2023 — 88 memes  
+  2024 — 79 memes  
+  2025 — 67 memes  
+
+For EACH year, show:
+1. A massive full-bleed year label ("2025") with parallax scroll effect
+2. A glassmorphism card grid (3 columns desktop, 1 mobile) showing 
+   the TOP 6 memes of that year. Each meme card must have:
+   - An emoji icon representing the meme (large, centered)
+   - Meme name in bold display type
+   - A witty 1-sentence description
+   - A "Virality Score" progress bar that animates in on scroll 
+     (using Intersection Observer)
+   - A subtle animated shimmer/glow border on hover
+   - A small tag showing its origin platform 
+     (Twitter / Reddit / TikTok / 4chan / YouTube)
+3. A horizontal pill showing total meme count for that year that 
+   animates counting up when scrolled into view
+
+---
+
+## 🎨 VISUAL DESIGN REQUIREMENTS
+
+### Color Palette (use CSS variables):
+- --bg: #050508 (near-black with blue undertone)
+- --surface: rgba(255,255,255,0.04)
+- --surface-hover: rgba(255,255,255,0.08)
+- --border: rgba(255,255,255,0.10)
+- --accent-1: #FF3CAC (hot pink)
+- --accent-2: #784BA0 (deep purple)
+- --accent-3: #2B86C5 (electric blue)
+- --text-primary: #F5F5F5
+- --text-muted: rgba(255,255,255,0.45)
+- Gradient mesh background: animated radial gradients shifting 
+  between the three accent colors at 20s cycle
+
+### Typography:
+- Headlines: "Bebas Neue" (Google Fonts)
+- Body / UI: "DM Sans" (Google Fonts)  
+- Accent / quotes: "Playfair Display Italic" (Google Fonts)
+- Year numbers: 20vw+ size, ultra-light weight, letter-spaced, 
+  used as design elements
+
+### Glassmorphism Rules:
+- All cards: background rgba(255,255,255,0.04), 
+  backdrop-filter blur(16px) saturate(180%), 
+  border 1px solid rgba(255,255,255,0.10),
+  border-radius 16px, box-shadow with accent color glow
+
+### Animations (ALL must be implemented):
+1. **Parallax scrolling**: Year numbers scroll at 0.3x speed 
+   relative to content (CSS transform translateY with JS scroll listener)
+2. **Intersection Observer reveals**: Every card, stat, and section 
+   fades + slides up when entering viewport (staggered 100ms delays)
+3. **Animated gradient mesh background**: 3 radial gradient orbs 
+   that slowly drift using @keyframes (no libraries needed)
+4. **Card hover effects**: 
+   - translateY(-8px) lift
+   - Border glow pulses in accent color
+   - Emoji scales up 1.2x
+   - Shimmer sweep animation across card surface
+5. **Counter animations**: Meme count numbers animate from 0 to 
+   their value using requestAnimationFrame when scrolled into view
+6. **Hero text glitch**: CSS glitch animation on "MEMEPEDIA" 
+   using ::before ::after pseudo-elements with clip-path
+7. **Scroll progress bar**: Thin gradient line at top of page 
+   showing how far user has scrolled
+8. **Cursor glow**: Custom cursor with a soft radial glow that 
+   follows mouse movement (div with pointer-events:none)
+
+---
+
+## 📱 RESPONSIVE DESIGN
+
+- Mobile-first approach
+- Breakpoints: 768px (tablet), 1200px (desktop)
+- Cards: 1 col mobile → 2 col tablet → 3 col desktop
+- Year numbers shrink proportionally using clamp()
+- Touch-friendly hover states (use :active fallbacks)
+
+---
+
+## ⚡ TECHNICAL REQUIREMENTS
+
+- Single HTML file, zero external dependencies except Google Fonts
+- All CSS in <style> tags, all JS in <script> tags
+- Must use Intersection Observer API for scroll animations
+- Must use requestAnimationFrame for counter animations
+- Smooth scroll: scroll-behavior: smooth on html element
+- Performance: use will-change: transform on animated elements
+- Use CSS custom properties throughout (no hardcoded values)
+
+---
+
+## 🏁 FOOTER
+
+- Glass footer with tagline: "Every meme is a mirror of its time."
+- Links: About / Submit a Meme / API / Twitter
+- Animated noise texture overlay on footer (CSS or SVG filter)
+- Gradient divider line above footer
+
+---
+
+## ✅ FINAL CHECKLIST — DO NOT SKIP ANY OF THESE:
+
+[ ] Hero with glitch animation on title  
+[ ] Animated gradient mesh background (drifting orbs)  
+[ ] Custom cursor glow effect  
+[ ] Scroll progress bar at top  
+[ ] Sticky glassmorphism navbar with year links  
+[ ] All 14 year sections (2012–2025) with correct meme counts  
+[ ] 6 meme cards per year (84 total cards)  
+[ ] Virality score bars that animate on scroll  
+[ ] Counter animations for meme totals  
+[ ] Parallax on year number labels  
+[ ] Card hover: lift + glow + shimmer  
+[ ] Fully responsive (mobile → desktop)  
+[ ] Google Fonts: Bebas Neue + DM Sans + Playfair Display  
+[ ] CSS variables for all colors  
+[ ] Footer with noise texture  
+
+Deliver ONE complete, self-contained HTML file. 
+Do not truncate. Do not use placeholder comments like 
+"// repeat for other years" — write out ALL 14 years in full. 
+This is the most important instruction: complete, 
+unabridged, production-ready code only.
