@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMEPEDIA — The Internet's Cultural Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050508;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.10);
+            --accent-1: #FF3CAC;
+            --accent-2: #784BA0;
+            --accent-3: #2B86C5;
+            --text-primary: #F5F5F5;
+            --text-muted: rgba(255, 255, 255, 0.45);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated gradient mesh background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, var(--accent-1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, var(--accent-2) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, var(--accent-3) 0%, transparent 50%);
+            opacity: 0.08;
+            animation: gradientDrift 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientDrift {
+            0%, 100% {
+                background: radial-gradient(circle at 20% 50%, var(--accent-1) 0%, transparent 50%),
+                            radial-gradient(circle at 80% 80%, var(--accent-2) 0%, transparent 50%),
+                            radial-gradient(circle at 40% 80%, var(--accent-3) 0%, transparent 50%);
+            }
+            33% {
+                background: radial-gradient(circle at 30% 60%, var(--accent-1) 0%, transparent 50%),
+                            radial-gradient(circle at 70% 70%, var(--accent-2) 0%, transparent 50%),
+                            radial-gradient(circle at 50% 90%, var(--accent-3) 0%, transparent 50%);
+            }
+            66% {
+                background: radial-gradient(circle at 25% 40%, var(--accent-1) 0%, transparent 50%),
+                            radial-gradient(circle at 85% 60%, var(--accent-2) 0%, transparent 50%),
+                            radial-gradient(circle at 35% 70%, var(--accent-3) 0%, transparent 50%);
+            }
+        }
+
+        /* Scroll progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            width: 0%;
+            z-index: 1000;
+            will-change: width;
+        }
+
+        /* Custom cursor glow */
+        .cursor-glow {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-1) 0%, transparent 70%);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 999;
+            mix-blend-mode: screen;
+            will-change: transform;
+        }
+
+        /* Sticky navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--accent-1);
+        }
+
+        /* Hero section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(5, 5, 8, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 15vw, 12rem);
+            font-weight: 700;
+            letter-spacing: 8px;
+            margin-bottom: 1rem;
+            position: relative;
+            animation: glitch 0.5s ease-in-out 1;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 0 0 0 transparent;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            20% {
+                text-shadow: -3px 0 var(--accent-1), 3px 0 var(--accent-3);
+                clip-path: polygon(0 0, 100% 0, 100% 45%, 0 58%);
+            }
+            40% {
+                text-shadow: 3px 0 var(--accent-2), -3px 0 var(--accent-1);
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            60% {
+                text-shadow: -3px 0 var(--accent-3), 3px 0 var(--accent-2);
+                clip-path: polygon(0 0, 100% 0, 100% 70%, 0 55%);
+            }
+            80% {
+                text-shadow: 3px 0 var(--accent-1), -3px 0 var(--accent-3);
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+        }
+
+        .hero-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .stat-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent-1);
+            box-shadow: 0 8px 32px rgba(255, 60, 172, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-1);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent-1);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Year sections */
+        .year-section {
+            position: relative;
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .year-header {
+            position: relative;
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: flex-end;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .year-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(8rem, 20vw, 20rem);
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: rgba(255, 255, 255, 0.05);
+            line-height: 1;
+            will-change: transform;
+        }
+
+        .year-stats {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-1);
+        }
+
+        /* Meme grid */
+        .meme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .meme-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .meme-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Meme cards */
+        .meme-card {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            will-change: transform, box-shadow;
+        }
+
+        .meme-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .meme-card:hover::before {
+            left: 100%;
+        }
+
+        .meme-card:hover {
+            transform: translateY(-8px);
+            background: var(--surface-hover);
+            border-color: var(--accent-1);
+            box-shadow: 0 20px 40px rgba(255, 60, 172, 0.2);
+        }
+
+        .meme-emoji {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .meme-card:hover .meme-emoji {
+            transform: scale(1.2);
+        }
+
+        .meme-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .meme-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .meme-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .platform-tag {
+            display: inline-block;
+            background: rgba(255, 60, 172, 0.1);
+            border: 1px solid var(--accent-1);
+            color: var(--accent-1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            width: fit-content;
+        }
+
+        .virality-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .virality-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .virality-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .virality-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            width: 0%;
+            animation: fillBar 1s ease-out forwards;
+        }
+
+        @keyframes fillBar {
+            to {
+                width: var(--width);
+            }
+        }
+
+        /* Fade-up animation */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .fade-up.visible {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem;
+            text-align: center;
+            z-index: 1;
+            margin-top: 4rem;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-1), var(--accent-2), var(--accent-3), transparent);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-tagline {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-1);
+        }
+
+        .footer-credit {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                font-size: 0.75rem;
+                gap: 0.5rem;
+            }
+
+            .year-label {
+                font-size: clamp(4rem, 15vw, 8rem);
+            }
+
+            .year-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero h1 {
+                font-size: clamp(2rem, 10vw, 4rem);
+            }
+
+            .stat-card {
+                min-width: 150px;
+                padding: 1.5rem;
+            }
+
+            .footer-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"></div>
+    <div class="cursor-glow"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#year-2012" class="nav-link">2012</a></li>
+            <li><a href="#year-2013" class="nav-link">2013</a></li>
+            <li><a href="#year-2014" class="nav-link">2014</a></li>
+            <li><a href="#year-2015" class="nav-link">2015</a></li>
+            <li><a href="#year-2016" class="nav-link">2016</a></li>
+            <li><a href="#year-2017" class="nav-link">2017</a></li>
+            <li><a href="#year-2018" class="nav-link">2018</a></li>
+            <li><a href="#year-2019" class="nav-link">2019</a></li>
+            <li><a href="#year-2020" class="nav-link">2020</a></li>
+            <li><a href="#year-2021" class="nav-link">2021</a></li>
+            <li><a href="#year-2022" class="nav-link">2022</a></li>
+            <li><a href="#year-2023" class="nav-link">2023</a></li>
+            <li><a href="#year-2024" class="nav-link">2024</a></li>
+            <li><a href="#year-2025" class="nav-link">2025</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>MEMEPEDIA</h1>
+            <p class="hero-subtitle">Cataloguing the Internet's Cultural Zeitgeist</p>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="total-memes">0</span>
+                    <span class="stat-label">Total Memes Catalogued</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">14</span>
+                    <span class="stat-label">Years Archived</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">84</span>
+                    <span class="stat-label">Featured Memes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Year Sections -->
+    
+    <!-- YEAR 2012 -->
+    <section class="year-section" id="year-2012">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2012</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="48">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">😾</div>
+                <h3 class="meme-name">Grumpy Cat</h3>
+                <p class="meme-desc">The feline embodiment of Monday mornings.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">💃</div>
+                <h3 class="meme-name">Gangnam Style</h3>
+                <p class="meme-desc">The invisible horse dance that broke YouTube's view counter.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🤦‍♂️</div>
+                <h3 class="meme-name">Overly Attached Girlfriend</h3>
+                <p class="meme-desc">The stare that launched a thousand restraining orders.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="88%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🤷‍♂️</div>
+                <h3 class="meme-name">Ridiculously Photogenic Guy</h3>
+                <p class="meme-desc">Looking flawless while running a marathon.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👀</div>
+                <h3 class="meme-name">Ermahgerd</h3>
+                <p class="meme-desc">Goosebumps enthusiasm taken to phonetic extremes.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="82%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐻</div>
+                <h3 class="meme-name">Ted</h3>
+                <p class="meme-desc">The foul-mouthed teddy bear that ruined childhoods.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="78%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2013 -->
+    <section class="year-section" id="year-2013">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2013</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="52">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐕</div>
+                <h3 class="meme-name">Doge</h3>
+                <p class="meme-desc">Much wow. Very meme. Such internet.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🕺</div>
+                <h3 class="meme-name">Harlem Shake</h3>
+                <p class="meme-desc">30 seconds of chaotic, uncoordinated dancing.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🦊</div>
+                <h3 class="meme-name">What Does the Fox Say?</h3>
+                <p class="meme-desc">The existential question of the year.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="91%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">😒</div>
+                <h3 class="meme-name">Side Eyeing Chloe</h3>
+                <p class="meme-desc">The ultimate expression of unimpressed skepticism.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="89%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👑</div>
+                <h3 class="meme-name">Lord Disick</h3>
+                <p class="meme-desc">Reality TV royalty declaring his supremacy.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="75%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🏃</div>
+                <h3 class="meme-name">Prancing Cera</h3>
+                <p class="meme-desc">Michael Cera awkwardly skipping through history.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="72%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2014 -->
+    <section class="year-section" id="year-2014">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2014</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="61">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐸</div>
+                <h3 class="meme-name">Kermit Sipping Tea</h3>
+                <p class="meme-desc">But that's none of my business.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧊</div>
+                <h3 class="meme-name">Ice Bucket Challenge</h3>
+                <p class="meme-desc">Freezing for a good cause.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Facebook</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🍑</div>
+                <h3 class="meme-name">Kim K Break the Internet</h3>
+                <p class="meme-desc">The magazine cover that spawned a million parodies.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👦</div>
+                <h3 class="meme-name">Alex from Target</h3>
+                <p class="meme-desc">Accidental retail heartthrob.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🥔</div>
+                <h3 class="meme-name">Potato Salad Kickstarter</h3>
+                <p class="meme-desc">Raising $55,000 for a side dish.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Kickstarter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="81%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🦈</div>
+                <h3 class="meme-name">Left Shark</h3>
+                <p class="meme-desc">The Super Bowl halftime show's true MVP.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="88%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2015 -->
+    <section class="year-section" id="year-2015">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2015</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="58">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👗</div>
+                <h3 class="meme-name">The Dress</h3>
+                <p class="meme-desc">Black and blue or white and gold? The debate that tore families apart.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Tumblr</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐸</div>
+                <h3 class="meme-name">Pepe the Frog</h3>
+                <p class="meme-desc">Feels good, man.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">4chan</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🔥</div>
+                <h3 class="meme-name">This is Fine</h3>
+                <p class="meme-desc">A dog calmly accepting his fiery demise.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="97%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🎺</div>
+                <h3 class="meme-name">Unexpected John Cena</h3>
+                <p class="meme-desc">His name is John Cena! *horns blare*</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Vine</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="91%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🍕</div>
+                <h3 class="meme-name">Pizza Rat</h3>
+                <p class="meme-desc">A New York hero carrying a slice down the subway stairs.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="89%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👟</div>
+                <h3 class="meme-name">What Are Those?!</h3>
+                <p class="meme-desc">The ultimate footwear roast.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Vine</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="86%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2016 -->
+    <section class="year-section" id="year-2016">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2016</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="74">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🦍</div>
+                <h3 class="meme-name">Harambe</h3>
+                <p class="meme-desc">Gone but never forgotten.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐸</div>
+                <h3 class="meme-name">Dat Boi</h3>
+                <p class="meme-desc">Here come dat boi! O shit waddup!</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Tumblr</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🤔</div>
+                <h3 class="meme-name">Roll Safe</h3>
+                <p class="meme-desc">You can't fail if you don't try.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🗑️</div>
+                <h3 class="meme-name">Evil Kermit</h3>
+                <p class="meme-desc">Me: Save money. Inner me: Buy it.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🚶</div>
+                <h3 class="meme-name">Arthur's Fist</h3>
+                <p class="meme-desc">Suppressed rage in cartoon form.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="91%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">💧</div>
+                <h3 class="meme-name">Water Bottle Flip</h3>
+                <p class="meme-desc">The satisfying thud of a perfect landing.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="88%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2017 -->
+    <section class="year-section" id="year-2017">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2017</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="69">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👀</div>
+                <h3 class="meme-name">Distracted Boyfriend</h3>
+                <p class="meme-desc">The stock photo that defined a generation of choices.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧠</div>
+                <h3 class="meme-name">Expanding Brain</h3>
+                <p class="meme-desc">Ascending levels of cosmic irony.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧂</div>
+                <h3 class="meme-name">Salt Bae</h3>
+                <p class="meme-desc">Sprinkling seasoning with unnecessary flair.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Instagram</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="93%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🌭</div>
+                <h3 class="meme-name">Dancing Hot Dog</h3>
+                <p class="meme-desc">Snapchat's greatest contribution to society.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Snapchat</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="89%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐒</div>
+                <h3 class="meme-name">Mocking SpongeBob</h3>
+                <p class="meme-desc">tHe StOcK pHoTo ThAt DeFiNeD a GeNeRaTiOn.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🗑️</div>
+                <h3 class="meme-name">Trash Dove</h3>
+                <p class="meme-desc">The purple bird that headbanged its way into our hearts.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Facebook</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="82%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2018 -->
+    <section class="year-section" id="year-2018">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2018</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="83">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🦋</div>
+                <h3 class="meme-name">Is This a Pigeon?</h3>
+                <p class="meme-desc">Anime android misidentifying basic objects.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="97%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">😲</div>
+                <h3 class="meme-name">Surprised Pikachu</h3>
+                <p class="meme-desc">When the obvious consequence actually happens.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🚗</div>
+                <h3 class="meme-name">Car Salesman Slaps Roof</h3>
+                <p class="meme-desc">This bad boy can fit so much spaghetti in it.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🗣️</div>
+                <h3 class="meme-name">Yanny vs Laurel</h3>
+                <p class="meme-desc">The auditory sequel to The Dress.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🚶</div>
+                <h3 class="meme-name">Moth Lamp</h3>
+                <p class="meme-desc">Bröther, may I have some lämp?</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="90%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">💪</div>
+                <h3 class="meme-name">Weird Flex But OK</h3>
+                <p class="meme-desc">The perfect response to bizarre bragging.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2019 -->
+    <section class="year-section" id="year-2019">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2019</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="91">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐱</div>
+                <h3 class="meme-name">Woman Yelling at Cat</h3>
+                <p class="meme-desc">The ultimate clash of raw emotion and feline confusion.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👽</div>
+                <h3 class="meme-name">Storm Area 51</h3>
+                <p class="meme-desc">They can't stop all of us.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Facebook</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👶</div>
+                <h3 class="meme-name">Baby Yoda</h3>
+                <p class="meme-desc">The cutest thing in the galaxy sipping soup.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🤡</div>
+                <h3 class="meme-name">Joker Stairs</h3>
+                <p class="meme-desc">Dancing your way down into madness.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="91%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🍵</div>
+                <h3 class="meme-name">Kombucha Girl</h3>
+                <p class="meme-desc">The rapid cycle of disgust and intrigue.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="93%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">📈</div>
+                <h3 class="meme-name">Stonks</h3>
+                <p class="meme-desc">Financial genius in a surreal 3D render.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2020 -->
+    <section class="year-section" id="year-2020">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2020</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="127">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">⚰️</div>
+                <h3 class="meme-name">Coffin Dance</h3>
+                <p class="meme-desc">Astronomical consequences set to EDM.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🌍</div>
+                <h3 class="meme-name">Nature is Healing</h3>
+                <p class="meme-desc">We are the virus. The dolphins are returning.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🍰</div>
+                <h3 class="meme-name">Everything is Cake</h3>
+                <p class="meme-desc">Trust nothing. Slice everything.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="97%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐕</div>
+                <h3 class="meme-name">Swole Doge vs Cheems</h3>
+                <p class="meme-desc">Glorious past vs pathetic present.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐯</div>
+                <h3 class="meme-name">Tiger King</h3>
+                <p class="meme-desc">The chaotic distraction we needed in lockdown.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Netflix</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧑‍🚀</div>
+                <h3 class="meme-name">Always Has Been</h3>
+                <p class="meme-desc">The ultimate betrayal in space.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="93%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2021 -->
+    <section class="year-section" id="year-2021">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2021</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="108">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🚢</div>
+                <h3 class="meme-name">Ever Given</h3>
+                <p class="meme-desc">One boat blocking global trade.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧤</div>
+                <h3 class="meme-name">Bernie's Mittens</h3>
+                <p class="meme-desc">Cozy, practical, and unimpressed at the inauguration.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🦍</div>
+                <h3 class="meme-name">Ape Together Strong</h3>
+                <p class="meme-desc">Diamond hands holding the line.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="97%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🔴</div>
+                <h3 class="meme-name">Squid Game</h3>
+                <p class="meme-desc">Red light, green light, existential dread.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🚩</div>
+                <h3 class="meme-name">Red Flags</h3>
+                <p class="meme-desc">When they say they don't like Shrek.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👨</div>
+                <h3 class="meme-name">Anakin and Padme</h3>
+                <p class="meme-desc">For the better, right?</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2022 -->
+    <section class="year-section" id="year-2022">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2022</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="95">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🦇</div>
+                <h3 class="meme-name">Morbius</h3>
+                <p class="meme-desc">It's Morbin' time.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👦</div>
+                <h3 class="meme-name">Kid Named Finger</h3>
+                <p class="meme-desc">Breaking Bad irony reaching critical mass.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="91%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐶</div>
+                <h3 class="meme-name">Let Me Do It For You</h3>
+                <p class="meme-desc">The long-snouted borzoi offering assistance.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🌽</div>
+                <h3 class="meme-name">Corn Kid</h3>
+                <p class="meme-desc">It has the juice.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧍</div>
+                <h3 class="meme-name">Kevin James Smirk</h3>
+                <p class="meme-desc">The king of queens looking mischievously shy.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧠</div>
+                <h3 class="meme-name">Wise Mystical Tree</h3>
+                <p class="meme-desc">If you're over 25 and own a computer...</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="89%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2023 -->
+    <section class="year-section" id="year-2023">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2023</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="88">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🚽</div>
+                <h3 class="meme-name">Skibidi Toilet</h3>
+                <p class="meme-desc">Gen Alpha's incomprehensible masterpiece.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">YouTube</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🩷</div>
+                <h3 class="meme-name">Barbenheimer</h3>
+                <p class="meme-desc">The ultimate cinematic double feature.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👽</div>
+                <h3 class="meme-name">Mexican Alien</h3>
+                <p class="meme-desc">The papier-mâché extraterrestrial.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="93%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧢</div>
+                <h3 class="meme-name">Smurf Cat</h3>
+                <p class="meme-desc">We live, we love, we lie.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🍟</div>
+                <h3 class="meme-name">Grimace Shake</h3>
+                <p class="meme-desc">Happy birthday Grimace... *collapses*</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🏛️</div>
+                <h3 class="meme-name">Roman Empire</h3>
+                <p class="meme-desc">How often do you think about it?</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2024 -->
+    <section class="year-section" id="year-2024">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2024</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="79">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐻</div>
+                <h3 class="meme-name">Man vs Bear</h3>
+                <p class="meme-desc">The hypothetical question that divided the internet.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🥥</div>
+                <h3 class="meme-name">Coconut Tree</h3>
+                <p class="meme-desc">You think you just fell out of a coconut tree?</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="97%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🕺</div>
+                <h3 class="meme-name">Raygun</h3>
+                <p class="meme-desc">Olympic breakdancing redefined.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🍎</div>
+                <h3 class="meme-name">Apple Vision Pro Bros</h3>
+                <p class="meme-desc">Walking through the city pinching the air.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧠</div>
+                <h3 class="meme-name">Brainrot</h3>
+                <p class="meme-desc">What the sigma?</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🐱</div>
+                <h3 class="meme-name">Pop Cat Returns</h3>
+                <p class="meme-desc">The classic returns with a vengeance.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="88%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YEAR 2025 -->
+    <section class="year-section" id="year-2025">
+        <div class="year-header">
+            <h2 class="year-label" data-speed="0.3">2025</h2>
+            <div class="year-stats fade-up">
+                <span class="stat-label">Memes Catalogued</span>
+                <span class="stat-number counter" data-target="67">0</span>
+            </div>
+        </div>
+        
+        <div class="meme-grid">
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🤖</div>
+                <h3 class="meme-name">AI Hallucinations</h3>
+                <p class="meme-desc">When the LLM insists 2+2=5 with absolute confidence.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="96%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🕶️</div>
+                <h3 class="meme-name">Neuralink Glitch</h3>
+                <p class="meme-desc">When your brain chip buffers mid-sentence.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🚀</div>
+                <h3 class="meme-name">Mars Colony HOA</h3>
+                <p class="meme-desc">Complaining about the neighbor's rover parking.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="91%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🧊</div>
+                <h3 class="meme-name">Deep Freeze Challenge</h3>
+                <p class="meme-desc">The new ice bucket, but with liquid nitrogen.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">TikTok</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="89%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">👽</div>
+                <h3 class="meme-name">Disclosure Day</h3>
+                <p class="meme-desc">They're real, and they're judging our memes.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Twitter</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="98%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="meme-card fade-up">
+                <div class="meme-emoji">🕰️</div>
+                <h3 class="meme-name">Time Traveler's Regret</h3>
+                <p class="meme-desc">Going back to 2012 just to buy Bitcoin.</p>
+                
+                <div class="meme-meta">
+                    <span class="platform-tag">Reddit</span>
+                    <div class="virality-container">
+                        <span class="virality-label">Virality Score</span>
+                        <div class="virality-bar">
+                            <div class="virality-fill" data-width="93%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-tagline">Every meme is a mirror of its time.</p>
+            
+            <div class="footer-links">
+                <a href="#hero">About</a>
+                <a href="#year-2025">Latest</a>
+                <a href="#year-2012">Archive</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+            </div>
+            
+            <div class="footer-credit">
+                <p>MEMEPEDIA — Cataloguing Internet Culture Since 2012 | 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll progress bar
+        const scrollProgress = document.querySelector('.scroll-progress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        // Custom cursor glow
+        const cursorGlow = document.querySelector('.cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        });
+
+        // Parallax effect on year labels
+        const yearLabels = document.querySelectorAll('.year-label');
+        window.addEventListener('scroll', () => {
+            yearLabels.forEach(label => {
+                const speed = parseFloat(label.getAttribute('data-speed'));
+                const yPos = window.scrollY * speed;
+                label.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Intersection Observer for fade-up animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animations
+        const counters = document.querySelectorAll('.counter');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    const target = parseInt(entry.target.getAttribute('data-target'));
+                    let current = 0;
+                    const increment = Math.ceil(target / 50);
+                    
+                    const countUp = () => {
+                        current += increment;
+                        if (current >= target) {
+                            entry.target.textContent = target;
+                            entry.target.classList.add('counted');
+                        } else {
+                            entry.target.textContent = current;
+                            requestAnimationFrame(countUp);
+                        }
+                    };
+                    
+                    countUp();
+                }
+            });
+        }, observerOptions);
+
+        counters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
+
+        // Total memes counter
+        const totalMemesEl = document.getElementById('total-memes');
+        let totalMemes = 0;
+        const allCounts = [48, 52, 61, 58, 74, 69, 83, 91, 127, 108, 95, 88, 79, 67];
+        const targetTotal = allCounts.reduce((a, b) => a + b, 0);
+        
+        const countUpTotal = () => {
+            const increment = Math.ceil(targetTotal / 50);
+            const interval = setInterval(() => {
+                totalMemes += increment;
+                if (totalMemes >= targetTotal) {
+                    totalMemesEl.textContent = targetTotal + '+';
+                    clearInterval(interval);
+                } else {
+                    totalMemesEl.textContent = totalMemes;
+                }
+            }, 30);
+        };
+
+        window.addEventListener('load', countUpTotal);
+
+        // Navigation highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.year-section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Virality bar animations
+        const viralityFills = document.querySelectorAll('.virality-fill');
+        const viralityObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        viralityFills.forEach(fill => {
+            viralityObserver.observe(fill);
+        });
+    </script>
+</body>
+</html>
